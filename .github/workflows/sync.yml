@@ -1,0 +1,18 @@
+name: Auto Sync Upstream
+
+on:
+  schedule:
+    - cron: '0 0 * * *' # 每天 UTC 0点（北京时间 8点）自动同步
+  workflow_dispatch:     # 支持手动点按钮触发
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Sync with upstream
+        run: gh repo sync $GITHUB_REPOSITORY -b main
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
